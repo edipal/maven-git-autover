@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           targetNamespace="http://de.palsoftware/maven/git/autover/config"
+           xmlns="http://de.palsoftware/maven/git/autover/config">
+    <xs:simpleType name="includeGroupId">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="stopOnEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ON_FIRST"/>
+            <xs:enumeration value="ON_FIRST_ANN"/>
+            <xs:enumeration value="ON_FIRST_LIGHT"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="autoverBranchConfig">
+        <xs:sequence>
+            <xs:element type="xs:string" name="nameRegex" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="stopOnEnum" name="stopOn" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="autoverConfig">
+        <xs:sequence>
+            <xs:element type="xs:string" name="versionTagRegex"/>
+            <xs:sequence>
+                <xs:element type="includeGroupId" name="includeGroupIds" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:sequence>
+                <xs:element type="autoverBranchConfig" name="autoverBranchConfigs" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="config" type="autoverConfig"/>
+</xs:schema>

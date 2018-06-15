@@ -1,0 +1,9 @@
+*.class
+*.iml
+.classpath
+.project
+.settings
+.checkstyle
+**/target
+release.properties
+pom.xml.releaseBackup

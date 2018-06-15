@@ -1,0 +1,109 @@
+#first we want that for all detected text files an automatic conversion of EOL is done
+#exceptions to this rule will come later in this file
+*      text=auto
+
+#special text files - with fixed end of line
+*.bat  text eol=crlf
+*.sh   text eol=lf
+
+#images
+*.jpg  binary
+*.jpeg binary
+*.tif  binary
+*.tiff binary
+*.gif  binary
+*.bmp  binary
+*.png  binary
+
+#ms office - legacy
+
+#word
+*.doc  binary
+*.dot  binary
+*.wbk  binary
+
+#excel
+*.xls  binary
+*.xlt  binary
+*.xlm  binary
+
+#power point
+*.ppt  binary
+*.pot  binary
+*.pps  binary
+
+#ms office
+
+#word
+*.docx binary
+*.docm binary
+*.dotx binary
+*.dotm binary
+*.docb binary
+
+#excel
+*.xlsx binary
+*.xlsm binary
+*.xltx binary
+*.xltm binary
+
+#power point
+*.pptx binary
+*.pptm binary
+*.potx binary
+*.potm binary
+*.ppam binary
+*.ppsx binary
+*.ppsm binary
+*.sldx binary
+*.sldm binary
+
+#open office
+*.odt  binary
+*.ott  binary
+*.odm  binary
+*.ods  binary
+*.ots  binary
+*.odg  binary
+*.otg  binary
+*.odp  binary
+*.otp  binary
+*.odf  binary
+*.odb  binary
+*.oxt  binary
+
+#other documents
+*.pdf  binary
+*.epub binary
+*.rtf  binary
+
+#archives
+*.zip  binary
+*.zipx binary
+*.tar  binary
+*.iso  binary
+*.bz2  binary
+*.7z   binary
+*.dmg  binary
+*.rar  binary
+
+#sap pi export archive
+*.tpz  binary
+
+#java world archives
+*.jar  binary
+*.war  binary
+*.ear  binary
+
+#other binary files
+*.bin  binary
+*.exe  binary
+*.dll  binary
+*.lib  binary
+*.msi  binary
+*.a    binary
+*.o    binary
+*.so   binary
+*.jnilib binary
+*.sl   binary
+

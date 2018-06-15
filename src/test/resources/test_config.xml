@@ -1,0 +1,10 @@
+<con:config xmlns:con="http://de.palsoftware/maven/git/autover/config">
+    <con:versionTagRegex>[0-9]+</con:versionTagRegex>
+    <!--1 or more repetitions:-->
+    <con:includeGroupIds>de.innoface.file</con:includeGroupIds>
+    <!--1 or more repetitions:-->
+    <con:autoverBranchConfigs>
+        <con:nameRegex>master</con:nameRegex>
+        <con:stopOn>ON_FIRST_ANN</con:stopOn>
+    </con:autoverBranchConfigs>
+</con:config>
