@@ -1,5 +1,6 @@
 package de.palsoftware.tools.maven.git.autover;
 
+import com.sun.xml.bind.v2.ContextFactory;
 import de.palsoftware.tools.maven.git.autover.conf.AutoverBranchConfig;
 import de.palsoftware.tools.maven.git.autover.conf.AutoverConfig;
 import org.junit.Assert;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -69,7 +71,7 @@ public abstract class BaseTest {
 
     protected AutoverConfig readConfig(String filePath) throws JAXBException, SAXException {
         final String configPackageName = AutoverConfig.class.getPackage().getName();
-        final JAXBContext jc = JAXBContext.newInstance(AutoverConfig.class);
+        final JAXBContext jc = ContextFactory.createContext(new Class[]{AutoverConfig.class}, Collections.emptyMap());
         Unmarshaller u = jc.createUnmarshaller();
         final ClassLoader classLoader = this.getClass().getClassLoader();
         final String schemaPath = configPackageName.replaceAll("\\.", "\\/") + "/config.xsd";

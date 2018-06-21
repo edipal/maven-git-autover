@@ -2,9 +2,8 @@ package de.palsoftware.tools.maven.git.autover;
 
 import de.palsoftware.tools.maven.git.autover.conf.AutoverBranchConfig;
 import de.palsoftware.tools.maven.git.autover.conf.StopOnEnum;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -14,11 +13,6 @@ import java.util.regex.Pattern;
  * @since 2018-06-15
  */
 public class AutoverBranchConfigDecorator {
-
-    /**
-     * Fields to be excluded from equals and hashCode.
-     */
-    private static final String[] EXCLUDE_FIELDS = new String[]{"namePattern"};
 
     /**
      * the configuration.
@@ -67,24 +61,27 @@ public class AutoverBranchConfigDecorator {
         return autoverBranchConfig.getStopOn();
     }
 
-    /**
-     * Check if this object is equal to the object specified as a parameter.
-     *
-     * @param o the other object
-     * @return true if the objects are equal and false otherwise
-     */
     @Override
     public boolean equals(final Object o) {
-        return EqualsBuilder.reflectionEquals(this, o, EXCLUDE_FIELDS);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AutoverBranchConfigDecorator)) {
+            return false;
+        }
+        AutoverBranchConfigDecorator that = (AutoverBranchConfigDecorator) o;
+        return Objects.equals(autoverBranchConfig, that.autoverBranchConfig);
     }
 
-    /**
-     * Calculate the hash code.
-     *
-     * @return the hash code
-     */
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, EXCLUDE_FIELDS);
+        return Objects.hash(autoverBranchConfig);
+    }
+
+    @Override
+    public String toString() {
+        return "AutoverBranchConfigDecorator{"
+                + "autoverBranchConfig=" + autoverBranchConfig
+                + '}';
     }
 }

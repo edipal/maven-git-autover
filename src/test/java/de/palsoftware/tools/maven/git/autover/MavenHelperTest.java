@@ -3,6 +3,8 @@ package de.palsoftware.tools.maven.git.autover;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.logging.Logger;
+import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,6 +29,9 @@ public class MavenHelperTest extends BaseTest {
     public void setUp() throws Exception {
         super.setUp();
         mavenHelper = new MavenHelper();
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        mavenHelper.setLogger(logger);
     }
 
     @Test

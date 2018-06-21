@@ -56,6 +56,21 @@ public class AutoverBranchConfigDecoratorTest {
     }
 
     @Test
+    public void toStringTest() {
+        final AutoverBranchConfig config1 = new AutoverBranchConfig();
+        config1.setNameRegex("AABBCC");
+        config1.setStopOn(StopOnEnum.ON_FIRST);
+        final AutoverBranchConfigDecorator config1Decorator = new AutoverBranchConfigDecorator(config1);
+        final String toString1 = config1Decorator.toString();
+        final AutoverBranchConfig config2 = new AutoverBranchConfig();
+        config2.setNameRegex("ABCDEF");
+        final AutoverBranchConfigDecorator config2Decorator = new AutoverBranchConfigDecorator(config2);
+        final String toString2 = config2Decorator.toString();
+
+        Assert.assertFalse("AutoverBranchConfigDecorator ->  toString problem!", toString1.equals(toString2));
+    }
+
+    @Test
     public void equalsAndHashCode() {
         final AutoverBranchConfig config1 = new AutoverBranchConfig();
         config1.setNameRegex("AABBCC");

@@ -7,6 +7,7 @@ import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.building.ModelSource;
 import org.apache.maven.model.io.DefaultModelReader;
 import org.apache.maven.model.locator.DefaultModelLocator;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,7 +46,9 @@ public class MavenModelProcessorImplTest extends BaseTest {
         mavenModelProcessor.setAutoverSession(autoverSession);
         mavenModelProcessor.setModelReader(new DefaultModelReader());
         mavenModelProcessor.setModelLocator(new DefaultModelLocator());
-        mavenModelProcessor.setLogger(new ConsoleLogger());
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        mavenModelProcessor.setLogger(logger);
 
         final URL testPomURL = this.getClass().getClassLoader().getResource("test_pom.xml");
         options = new HashMap<>();

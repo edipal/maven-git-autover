@@ -1,5 +1,6 @@
 package de.palsoftware.tools.maven.git.autover;
 
+import com.sun.xml.bind.v2.ContextFactory;
 import de.palsoftware.tools.maven.git.autover.conf.AutoverConfig;
 import org.codehaus.plexus.logging.Logger;
 import org.xml.sax.SAXException;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Properties;
 
 /**
@@ -68,7 +70,10 @@ public class ConfigReader {
         InputStream configInputStream = null;
         try {
             final String configPackageName = AutoverConfig.class.getPackage().getName();
-            final JAXBContext jc = JAXBContext.newInstance(AutoverConfig.class);
+            //JAXBContext.newInstance(AutoverConfig.class);
+            //for some reason (classloader related??) maven can't find the right context factory
+            final JAXBContext jc = ContextFactory.createContext(new Class[]{AutoverConfig.class}, Collections.emptyMap());
+
             final Unmarshaller u = jc.createUnmarshaller();
 
             //compute schema

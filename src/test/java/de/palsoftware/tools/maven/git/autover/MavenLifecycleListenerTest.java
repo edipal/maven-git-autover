@@ -2,6 +2,7 @@ package de.palsoftware.tools.maven.git.autover;
 
 import de.palsoftware.tools.maven.git.autover.conf.AutoverConfig;
 import org.apache.maven.MavenExecutionException;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,7 +30,9 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
         super.setUp();
         mavenLifecycleListener = new MavenLifecycleListener();
         mavenLifecycleListener.setAutoverSession(autoverSession);
-        mavenLifecycleListener.setLogger(new ConsoleLogger());
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        mavenLifecycleListener.setLogger(logger);
         final AutoverConfig defaultConfiguration = ConfigHelper.getDefaultConfiguration();
         autoverConfigDecorator = new AutoverConfigDecorator(defaultConfiguration);
     }

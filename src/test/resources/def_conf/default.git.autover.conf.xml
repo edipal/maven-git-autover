@@ -1,4 +1,4 @@
-<con:config xmlns:con="http://de.palsoftware/maven/git/autover/config">
+<con:config xmlns:con="http://de.palsoftware/tools/maven/git/autover/conf">
     <con:versionTagRegex>[0-9]+</con:versionTagRegex>
     <!--1 or more repetitions:-->
     <con:includeGroupIds>de.innoface.default</con:includeGroupIds>

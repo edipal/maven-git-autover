@@ -1,38 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           targetNamespace="http://de.palsoftware/maven/git/autover/config"
-           xmlns="http://de.palsoftware/maven/git/autover/config">
+           targetNamespace="http://de.palsoftware/tools/maven/git/autover/conf"
+           xmlns="http://de.palsoftware/tools/maven/git/autover/conf">
     <xs:simpleType name="includeGroupId">
+        <xs:annotation>
+            <xs:documentation>Holds a group id.</xs:documentation>
+        </xs:annotation>
         <xs:restriction base="xs:string"/>
     </xs:simpleType>
 
     <xs:simpleType name="stopOnEnum">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="ON_FIRST"/>
-            <xs:enumeration value="ON_FIRST_ANN"/>
-            <xs:enumeration value="ON_FIRST_LIGHT"/>
+            <xs:enumeration value="ON_FIRST">
+                <xs:annotation>
+                    <xs:documentation>It will use the first branch that it will find.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ON_FIRST_ANN">
+                <xs:annotation>
+                    <xs:documentation>It will use the first annotated branch that it will find.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ON_FIRST_LIGHT">
+                <xs:annotation>
+                    <xs:documentation>It will use the first light branch that it will find.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 
     <xs:complexType name="autoverBranchConfig">
         <xs:sequence>
-            <xs:element type="xs:string" name="nameRegex" minOccurs="1" maxOccurs="1"/>
-            <xs:element type="stopOnEnum" name="stopOn" minOccurs="1" maxOccurs="1"/>
+            <xs:element type="xs:string" name="nameRegex" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>This is used to determine the branches that should use this configuration.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element type="stopOnEnum" name="stopOn" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The stop on setting to be used by branches that match the above pattern.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="autoverConfig">
         <xs:sequence>
-            <xs:element type="xs:string" name="versionTagRegex"/>
+            <xs:element type="xs:string" name="versionTagRegex">
+                <xs:annotation>
+                    <xs:documentation>This is used to determine what tags should be considered version tags.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:sequence>
-                <xs:element type="includeGroupId" name="includeGroupIds" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element type="includeGroupId" name="includeGroupIds" minOccurs="1" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Only artifacts in this group ids will be processed. When no such group is specified artifacts from all groups ids will
+                            be processed.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
             </xs:sequence>
             <xs:sequence>
-                <xs:element type="autoverBranchConfig" name="autoverBranchConfigs" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element type="autoverBranchConfig" name="autoverBranchConfigs" minOccurs="1" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>Holds the branch configurations.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
             </xs:sequence>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:element name="config" type="autoverConfig"/>
+    <xs:element name="config" type="autoverConfig">
+        <xs:annotation>
+            <xs:documentation>Holds the complete configuration.</xs:documentation>
+        </xs:annotation>
+    </xs:element>
 </xs:schema>

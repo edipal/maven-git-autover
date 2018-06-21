@@ -1,6 +1,7 @@
 package de.palsoftware.tools.maven.git.autover;
 
 import de.palsoftware.tools.maven.git.autover.conf.AutoverConfig;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,6 +28,9 @@ public class ConfigReaderTest extends BaseTest {
         final Properties systemProperties = new Properties();
 
         final ConfigReader configReader = new ConfigReader();
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        configReader.setLogger(logger);
         final AutoverConfigDecorator readConfig = configReader.readConfig(systemProperties, emptyFolder);
         final AutoverConfig defaultConfig = ConfigHelper.getDefaultConfiguration();
 
@@ -39,7 +43,9 @@ public class ConfigReaderTest extends BaseTest {
         final Properties systemProperties = getPropertiesWithConfig();
 
         final ConfigReader configReader = new ConfigReader();
-        configReader.setLogger(new ConsoleLogger());
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        configReader.setLogger(logger);
         final AutoverConfigDecorator readConfig = configReader.readConfig(systemProperties, emptyFolder);
         final AutoverConfig config = readConfig("test_config.xml");
 
@@ -54,6 +60,9 @@ public class ConfigReaderTest extends BaseTest {
 
         try {
             final ConfigReader configReader = new ConfigReader();
+            final ConsoleLogger logger = new ConsoleLogger();
+            logger.setThreshold(Logger.LEVEL_DEBUG);
+            configReader.setLogger(logger);
             configReader.readConfig(systemProperties, emptyFolder);
             Assert.fail("ConfigReader problem!");
         } catch (final Exception e) {
@@ -71,6 +80,9 @@ public class ConfigReaderTest extends BaseTest {
 
         try {
             final ConfigReader configReader = new ConfigReader();
+            final ConsoleLogger logger = new ConsoleLogger();
+            logger.setThreshold(Logger.LEVEL_DEBUG);
+            configReader.setLogger(logger);
             configReader.readConfig(systemProperties, emptyFolder);
             Assert.fail("ConfigReader problem!");
         } catch (final Exception e) {
@@ -84,7 +96,9 @@ public class ConfigReaderTest extends BaseTest {
         final Properties systemProperties = new Properties();
 
         final ConfigReader configReader = new ConfigReader();
-        configReader.setLogger(new ConsoleLogger());
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        configReader.setLogger(logger);
         final AutoverConfigDecorator readConfig = configReader.readConfig(systemProperties, emptyFolder);
         final AutoverConfig config = readConfig("test_maven/.mvn/git.autover.conf.xml");
 

@@ -7,6 +7,7 @@ import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.building.ModelSource;
 import org.apache.maven.model.io.DefaultModelReader;
 import org.apache.maven.model.locator.DefaultModelLocator;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.junit.RepositoryTestCase;
@@ -107,7 +108,9 @@ public class MavenHelperIntegrationTest extends RepositoryTestCase {
 
         //test
         final MavenHelper mh = new MavenHelper();
-        mh.setLogger(new ConsoleLogger());
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        mh.setLogger(logger);
         mh.setAutoVersion(model, options, autoverSession);
 
         Assert.assertTrue("1.0.0-SNAPSHOT".equals(model.getVersion()));

@@ -77,4 +77,43 @@ public class AutoverConfigTest {
 
         Assert.assertFalse("AutoverConfig ->  toString problem!", toString1.equals(toString2));
     }
+
+    @Test
+    public void equalsAndHashCode() {
+        final AutoverConfig config1 = new AutoverConfig();
+        config1.setVersionTagRegex("AABBCC");
+        final AutoverBranchConfig branchConfig1 = new AutoverBranchConfig();
+        branchConfig1.setNameRegex("ABCDEF");
+        branchConfig1.setStopOn(StopOnEnum.ON_FIRST);
+        config1.getAutoverBranchConfigs().add(branchConfig1);
+        config1.getIncludeGroupIds().add("aaBBccDD");
+
+        final AutoverConfig config2 = new AutoverConfig();
+        config2.setVersionTagRegex("AABBCC");
+        final AutoverBranchConfig branchConfig2 = new AutoverBranchConfig();
+        branchConfig2.setNameRegex("ABCDEF");
+        branchConfig2.setStopOn(StopOnEnum.ON_FIRST);
+        config2.getAutoverBranchConfigs().add(branchConfig2);
+        config2.getIncludeGroupIds().add("aaBBccDD");
+
+        final AutoverConfig config3 = new AutoverConfig();
+        config3.setVersionTagRegex("AABBCC");
+        final AutoverBranchConfig branchConfig3 = new AutoverBranchConfig();
+        branchConfig3.setNameRegex("ABCaaF");
+        branchConfig3.setStopOn(StopOnEnum.ON_FIRST);
+        config3.getAutoverBranchConfigs().add(branchConfig3);
+        config3.getIncludeGroupIds().add("aaBB11DD");
+
+        //equals
+        Assert.assertTrue("AutoverConfig -> equals problem!", config1.equals(config1));
+        Assert.assertTrue("AutoverConfig -> equals problem!", config1.equals(config2));
+        Assert.assertFalse("AutoverConfig -> equals problem!", config1.equals(null));
+        Assert.assertFalse("AutoverConfig -> equals problem!", config1.equals(new Object()));
+        Assert.assertFalse("AutoverConfig -> equals problem!", config1.equals(config3));
+
+        //hashCode
+        Assert.assertTrue("AutoverConfig -> hashCode problem!", config1.hashCode() == config1.hashCode());
+        Assert.assertTrue("AutoverConfig -> hashCode problem!", config1.hashCode() == config2.hashCode());
+        Assert.assertFalse("AutoverConfig -> hashCode problem!", config1.hashCode() == config3.hashCode());
+    }
 }

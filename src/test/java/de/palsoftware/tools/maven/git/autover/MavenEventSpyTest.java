@@ -1,5 +1,6 @@
 package de.palsoftware.tools.maven.git.autover;
 
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +20,9 @@ public class MavenEventSpyTest {
         mavenEventSpy = new MavenEventSpy();
         final AutoverSession autoverSession = new AutoverSession();
         mavenEventSpy.setAutoverSession(autoverSession);
-        mavenEventSpy.setLogger(new ConsoleLogger());
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        mavenEventSpy.setLogger(logger);
     }
 
     @Test

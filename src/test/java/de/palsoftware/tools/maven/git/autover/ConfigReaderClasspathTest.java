@@ -2,6 +2,7 @@ package de.palsoftware.tools.maven.git.autover;
 
 import de.palsoftware.tools.maven.git.autover.conf.AutoverConfig;
 import org.apache.commons.io.FileUtils;
+import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.After;
 import org.junit.Before;
@@ -43,7 +44,9 @@ public class ConfigReaderClasspathTest extends BaseTest {
         final Properties systemProperties = new Properties();
 
         final ConfigReader configReader = new ConfigReader();
-        configReader.setLogger(new ConsoleLogger());
+        final ConsoleLogger logger = new ConsoleLogger();
+        logger.setThreshold(Logger.LEVEL_DEBUG);
+        configReader.setLogger(logger);
         final AutoverConfigDecorator readConfig = configReader.readConfig(systemProperties, emptyFolder);
         final AutoverConfig config = readConfig("def_conf/default.git.autover.conf.xml");
 

@@ -52,4 +52,28 @@ public class AutoverBranchConfigTest {
         Assert.assertFalse("AutoverBranchConfig ->  toString problem!", toString1.equals(toString2));
     }
 
+    @Test
+    public void equalsAndHashCode() {
+        final AutoverBranchConfig config1 = new AutoverBranchConfig();
+        config1.setNameRegex("AABBCC");
+        config1.setStopOn(StopOnEnum.ON_FIRST);
+        final AutoverBranchConfig config2 = new AutoverBranchConfig();
+        config2.setNameRegex("AABBCC");
+        config2.setStopOn(StopOnEnum.ON_FIRST);
+        final AutoverBranchConfig config3 = new AutoverBranchConfig();
+        config3.setNameRegex("112233");
+        config3.setStopOn(StopOnEnum.ON_FIRST);
+
+        //equals
+        Assert.assertTrue("AutoverBranchConfig -> equals problem!", config1.equals(config1));
+        Assert.assertTrue("AutoverBranchConfig -> equals problem!", config1.equals(config2));
+        Assert.assertFalse("AutoverBranchConfig -> equals problem!", config1.equals(null));
+        Assert.assertFalse("AutoverBranchConfig -> equals problem!", config1.equals(new Object()));
+        Assert.assertFalse("AutoverBranchConfig -> equals problem!", config1.equals(config3));
+
+        //hashCode
+        Assert.assertTrue("AutoverBranchConfig -> hashCode equals problem!", config1.hashCode() == config1.hashCode());
+        Assert.assertTrue("AutoverBranchConfig -> hashCode equals problem!", config1.hashCode() == config2.hashCode());
+        Assert.assertFalse("AutoverBranchConfig -> hashCode equals problem!", config1.hashCode() == config3.hashCode());
+    }
 }

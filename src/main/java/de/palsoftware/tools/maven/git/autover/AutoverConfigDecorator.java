@@ -2,11 +2,10 @@ package de.palsoftware.tools.maven.git.autover;
 
 import de.palsoftware.tools.maven.git.autover.conf.AutoverBranchConfig;
 import de.palsoftware.tools.maven.git.autover.conf.AutoverConfig;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -88,24 +87,27 @@ public class AutoverConfigDecorator {
         return autoverBranchConfigs;
     }
 
-    /**
-     * Check if this object is equal to the object specified as a parameter.
-     *
-     * @param o the other object
-     * @return true if the objects are equal and false otherwise
-     */
     @Override
     public boolean equals(final Object o) {
-        return EqualsBuilder.reflectionEquals(this, o, EXCLUDE_FIELDS);
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AutoverConfigDecorator)) {
+            return false;
+        }
+        AutoverConfigDecorator that = (AutoverConfigDecorator) o;
+        return Objects.equals(autoverConfig, that.autoverConfig);
     }
 
-    /**
-     * Calculate the hash code.
-     *
-     * @return the hash code
-     */
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this, EXCLUDE_FIELDS);
+        return Objects.hash(autoverConfig);
+    }
+
+    @Override
+    public String toString() {
+        return "AutoverConfigDecorator{"
+                + "autoverConfig=" + autoverConfig
+                + '}';
     }
 }
