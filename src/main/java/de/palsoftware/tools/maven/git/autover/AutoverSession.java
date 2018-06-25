@@ -29,6 +29,23 @@ public class AutoverSession {
      * The configuration of the maven extension.
      */
     private AutoverConfigDecorator config;
+    /**
+     * Disable the pom replacement (do not use installing to local or remote repos).
+     * Default is false.
+     */
+    private boolean disablePomChange;
+    /**
+     * Disable the extension (do not use installing to local or remote repos)
+     * Default is false.
+     */
+    private boolean disable;
+
+    /**
+     * Constructor.
+     */
+    public AutoverSession() {
+        super();
+    }
 
     /**
      * Getter.
@@ -76,6 +93,42 @@ public class AutoverSession {
     }
 
     /**
+     * Getter.
+     *
+     * @return if pom change should be disabled or not
+     */
+    public boolean isDisablePomChange() {
+        return disablePomChange;
+    }
+
+    /**
+     * Setter.
+     *
+     * @param value if pom change should be disabled or not
+     */
+    public void setDisablePomChange(final boolean value) {
+        this.disablePomChange = value;
+    }
+
+    /**
+     * Getter.
+     *
+     * @return if the extension is disabled or not.
+     */
+    public boolean isDisable() {
+        return disable;
+    }
+
+    /**
+     * Setter.
+     *
+     * @param value if the extension should be disabled or not.
+     */
+    public void setDisable(final boolean value) {
+        this.disable = value;
+    }
+
+    /**
      * Check if this object is equal to the object specified as a parameter.
      *
      * @param o the other object
@@ -90,9 +143,11 @@ public class AutoverSession {
             return false;
         }
         AutoverSession that = (AutoverSession) o;
-        return Objects.equals(getNewPomFiles(), that.getNewPomFiles())
-                && Objects.equals(getMavenMultiModuleProjectDir(), that.getMavenMultiModuleProjectDir())
-                && Objects.equals(getConfig(), that.getConfig());
+        return disablePomChange == that.disablePomChange
+                && disable == that.disable
+                && Objects.equals(newPomFiles, that.newPomFiles)
+                && Objects.equals(mavenMultiModuleProjectDir, that.mavenMultiModuleProjectDir)
+                && Objects.equals(config, that.config);
     }
 
     /**
@@ -102,6 +157,6 @@ public class AutoverSession {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getNewPomFiles(), getMavenMultiModuleProjectDir(), getConfig());
+        return Objects.hash(newPomFiles, mavenMultiModuleProjectDir, config, disablePomChange, disable);
     }
 }

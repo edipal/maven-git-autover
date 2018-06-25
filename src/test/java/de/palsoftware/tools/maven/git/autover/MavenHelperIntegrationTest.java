@@ -1,7 +1,10 @@
 package de.palsoftware.tools.maven.git.autover;
 
+import de.palsoftware.tools.maven.git.autover.conf.AutoverBranchConfig;
 import de.palsoftware.tools.maven.git.autover.conf.AutoverConfig;
+import de.palsoftware.tools.maven.git.autover.conf.StopOnEnum;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.Parent;
 import org.apache.maven.model.building.FileModelSource;
 import org.apache.maven.model.building.ModelProcessor;
 import org.apache.maven.model.building.ModelSource;
@@ -55,7 +58,7 @@ public class MavenHelperIntegrationTest extends RepositoryTestCase {
         git.add().addFilepattern("file1").call();
         git.commit().setMessage("file1 commit").call();
 
-        //tag 1.0.0-SNAPSHOT (not annotated)
+        //tag 1.0.0-SNAPSHOT (not annotated) - master
         git.tag().setAnnotated(false).setName("1.0.0-SNAPSHOT").call();
 
         //file 2 - master
@@ -92,6 +95,11 @@ public class MavenHelperIntegrationTest extends RepositoryTestCase {
         options.put(ModelProcessor.SOURCE, modelSource);
 
         model = mavenModelProcessor.read(modelFile, new HashMap<>());
+        final Parent parent = new Parent();
+        parent.setGroupId("test.parent.groupid");
+        parent.setArtifactId("test-parent");
+        parent.setVersion("1.1.1-SNAPSHOT");
+        model.setParent(parent);
     }
 
     @Override
@@ -100,10 +108,10 @@ public class MavenHelperIntegrationTest extends RepositoryTestCase {
         super.tearDown();
     }
 
-
     @Test
     public void setAutoVersion() throws IOException {
 
+        //version computed
         model.setVersion("0.0.0-SNAPSHOT");
 
         //test
@@ -119,5 +127,34 @@ public class MavenHelperIntegrationTest extends RepositoryTestCase {
         final File newPomFile = newPomFiles.get(modelId);
         Assert.assertNotNull(newPomFile);
         Assert.assertTrue(newPomFile.getName().startsWith("mvn_git_autover_pom"));
+
+        //not processed
+        model.setVersion("2.0.0");
+        model.setGroupId(null);
+        mh.setAutoVersion(model, options, autoverSession);
+
+        Assert.assertTrue("2.0.0".equals(model.getVersion()));
+
+        //empty version id
+        model.setVersion(null);
+        mh.setAutoVersion(model, options, autoverSession);
+
+        Assert.assertNull(model.getVersion());
+
+        //no tag found - throw exception
+        model.setVersion("0.0.0-SNAPSHOT");
+
+        autoverSession.getConfig().getAutoverBranchConfigs().clear();
+        final AutoverBranchConfig branchConfig = new AutoverBranchConfig();
+        branchConfig.setNameRegex("master");
+        branchConfig.setStopOn(StopOnEnum.ON_FIRST_ANN);
+        autoverSession.getConfig().getAutoverBranchConfigs().add(new AutoverBranchConfigDecorator(branchConfig));
+
+        try {
+            mh.setAutoVersion(model, options, autoverSession);
+            Assert.fail("No exception thrown!");
+        } catch (final Exception e) {
+            //ok
+        }
     }
 }

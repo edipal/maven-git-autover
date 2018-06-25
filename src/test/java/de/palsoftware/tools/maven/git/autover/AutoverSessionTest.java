@@ -63,6 +63,24 @@ public class AutoverSessionTest {
     }
 
     @Test
+    public void disablePomChange() {
+        autoverSession.setDisablePomChange(true);
+        Assert.assertTrue("AutoverSession -> disablePomChange setter / getter problem!", autoverSession.isDisablePomChange());
+
+        autoverSession.setDisablePomChange(false);
+        Assert.assertFalse("AutoverSession -> disablePomChange setter / getter problem!", autoverSession.isDisablePomChange());
+    }
+
+    @Test
+    public void disable() {
+        autoverSession.setDisable(true);
+        Assert.assertTrue("AutoverSession -> disable setter / getter problem!", autoverSession.isDisable());
+
+        autoverSession.setDisable(false);
+        Assert.assertFalse("AutoverSession -> disable setter / getter problem!", autoverSession.isDisable());
+    }
+
+    @Test
     public void equalsAndHashCode() {
         final AutoverSession session1 = new AutoverSession();
         final AutoverConfig autoverConfig1 = new AutoverConfig();

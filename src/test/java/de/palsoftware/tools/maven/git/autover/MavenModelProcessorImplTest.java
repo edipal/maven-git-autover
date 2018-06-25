@@ -32,12 +32,13 @@ public class MavenModelProcessorImplTest extends BaseTest {
     private MavenModelProcessorImpl mavenModelProcessor;
     private File testPomFile;
     private Map<String, Object> options;
+    private AutoverSession autoverSession;
 
     @Override
     @Before
     public void setUp() throws Exception {
         mavenModelProcessor = new MavenModelProcessorImpl();
-        final AutoverSession autoverSession = new AutoverSession();
+        autoverSession = new AutoverSession();
         final AutoverConfig autoverConfig = new AutoverConfig();
         autoverConfig.setVersionTagRegex("AABBCC");
         final AutoverConfigDecorator autoverConfigDecorator = new AutoverConfigDecorator(autoverConfig);
@@ -60,25 +61,36 @@ public class MavenModelProcessorImplTest extends BaseTest {
 
     @Test
     public void read1() throws IOException {
+        autoverSession.setDisable(false);
         final Model testPomModel = mavenModelProcessor.read(testPomFile, new HashMap<>());
-        assertModel(testPomModel);
+        assertModel(testPomModel, "1.0.0-SNAPSHOT");
     }
 
     @Test
     public void read2() throws IOException {
+        autoverSession.setDisable(false);
         final Model testPomModel = mavenModelProcessor.read(new FileReader(testPomFile), new HashMap<>());
-        assertModel(testPomModel);
+        assertModel(testPomModel, "1.0.0-SNAPSHOT");
     }
 
     @Test
     public void read3() throws IOException {
+        autoverSession.setDisable(false);
         final Model testPomModel = mavenModelProcessor.read(new FileInputStream(testPomFile), new HashMap<>());
-        assertModel(testPomModel);
+        assertModel(testPomModel, "1.0.0-SNAPSHOT");
     }
 
-    private void assertModel(final Model testPomModel) {
+    @Test
+    public void read4() throws IOException {
+        autoverSession.setDisable(true);
+        final Model testPomModel = mavenModelProcessor.read(new FileInputStream(testPomFile), new HashMap<>());
+        assertModel(testPomModel, "1.0.0-SNAPSHOT");
+    }
+
+    private void assertModel(final Model testPomModel, final String version) {
         Assert.assertNotNull("MavenModelProcessorImpl -> read (File, Map) problem!", testPomModel);
         Assert.assertTrue("MavenModelProcessorImpl -> read (File, Map) problem!", "de.palsoftware.tools".equals(testPomModel.getGroupId()));
         Assert.assertTrue("MavenModelProcessorImpl -> read (File, Map) problem!", "maven-git-autover".equals(testPomModel.getArtifactId()));
+        Assert.assertTrue("MavenModelProcessorImpl -> read (File, Map) problem!", version.equals(testPomModel.getVersion()));
     }
 }

@@ -67,7 +67,7 @@ public class MavenHelper {
         //version can be inherited
         final String versionId = model.getVersion();
         final ConfigHelper configHelper = new ConfigHelper(autoverSession.getConfig());
-        if (versionId != null) {
+        if ((versionId != null) && !versionId.isEmpty()) {
             final Object modelSource = options.get(ModelProcessor.SOURCE);
             if (modelSource instanceof FileModelSource) {
                 final boolean processArtifact = configHelper.shouldProcessArtifact(model.getVersion(), groupId, model.getArtifactId());

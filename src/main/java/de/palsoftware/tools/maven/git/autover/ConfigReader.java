@@ -36,11 +36,11 @@ public class ConfigReader {
     /**
      * the default configuration file name.
      */
-    private static final String DEFAULT_GIT_AUTOVER_CONF_XML = "default.git.autover.conf.xml";
+    public static final String DEFAULT_GIT_AUTOVER_CONF_XML = "default.git.autover.conf.xml";
     /**
      * the configuration file name.
      */
-    private static final String GIT_AUTOVER_CONF_XML = "git.autover.conf.xml";
+    public static final String GIT_AUTOVER_CONF_XML = "git.autover.conf.xml";
     /**
      * the mvn folder name.
      */
@@ -48,7 +48,7 @@ public class ConfigReader {
     /**
      * the git autover conf property.
      */
-    private static final String GIT_AUTOVER_CONF_PROPERTY = "git.autover.conf";
+    public static final String GIT_AUTOVER_CONF_PROPERTY = "git.autover.conf";
     /**
      * The logger.
      */

@@ -90,6 +90,14 @@ public class LocalizationHelper {
      */
     public static final String MSG_MODEL_PROCESSOR_CALLED = "msg.model.processor.called";
     /**
+     * Resource bundle key for the message that the extension is disabled.
+     */
+    public static final String MSG_DISABLED = "msg.disabled";
+    /**
+     * Resource bundle key for the message that the changing of the pom is disabled.
+     */
+    public static final String MSG_POM_CHANGE_DISABLED = "msg.pom.change.disabled";
+    /**
      * The resource bundle.
      */
     private static final ResourceBundle RB = ResourceBundle.getBundle("de.palsoftware.tools.maven.git.autover.MavenGitAutover", Locale.getDefault());

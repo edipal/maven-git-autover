@@ -96,9 +96,11 @@ public class MavenModelProcessorImpl extends DefaultModelProcessor {
      * @throws IOException for io problems
      */
     private void setAutoVersion(final Model model, final Map<String, ?> options) throws IOException {
-        final MavenHelper mh = new MavenHelper();
-        mh.setLogger(logger);
-        mh.setAutoVersion(model, options, autoverSession);
+        if (!autoverSession.isDisable()) {
+            final MavenHelper mh = new MavenHelper();
+            mh.setLogger(logger);
+            mh.setAutoVersion(model, options, autoverSession);
+        }
     }
 
     /**
@@ -118,6 +120,4 @@ public class MavenModelProcessorImpl extends DefaultModelProcessor {
     public void setAutoverSession(final AutoverSession value) {
         this.autoverSession = value;
     }
-
-
 }
