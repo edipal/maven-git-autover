@@ -75,7 +75,7 @@ public class MavenHelper {
                     if (logger.isDebugEnabled()) {
                         logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_PROJ_WILL_BE_PROCESSED, model.getId()));
                     }
-                    final File pomParentFolder = ((FileModelSource) modelSource).getFile().getParentFile();
+                    final File pomParentFolder = ((FileModelSource) modelSource).getFile().getCanonicalFile().getParentFile();
                     final String calculatedVer;
                     final GitHelper gitHelper = new GitHelper(pomParentFolder, configHelper);
                     final GitAnalysisResult gitAnalysisResult = gitHelper.analyze();

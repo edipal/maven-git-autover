@@ -127,7 +127,14 @@ public class ConfigReader {
 
             //if a conf file was not found, use default values
             if (config == null) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_CONF_DEFAULT));
+                }
                 config = ConfigHelper.getDefaultConfiguration();
+            }
+
+            if (logger.isDebugEnabled()) {
+                logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_CONF_SETTINGS, config));
             }
             return new AutoverConfigDecorator(config);
         } finally {

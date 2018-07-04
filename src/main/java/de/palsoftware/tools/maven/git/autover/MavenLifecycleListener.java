@@ -76,16 +76,20 @@ public class MavenLifecycleListener extends AbstractMavenLifecycleParticipant {
                     logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_POM_CHANGE_DISABLED));
                 }
             }
-            //the first folder up the hierarchy where an .mvn folder is found
-            //if no .mvn folder is found it points to the folder where the pom file is
-            final File multiModuleProjectDirectory = session.getRequest().getMultiModuleProjectDirectory();
-            autoverSession.setMavenMultiModuleProjectDir(multiModuleProjectDirectory);
+            try {
+                //the first folder up the hierarchy where an .mvn folder is found
+                //if no .mvn folder is found it points to the folder where the pom file is
+                final File multiModuleProjectDirectory = session.getRequest().getMultiModuleProjectDirectory();
+                autoverSession.setMavenMultiModuleProjectDir(multiModuleProjectDirectory.getCanonicalFile());
+            } catch (final IOException e) {
+                throw new MavenExecutionException(e.getMessage(), e);
+            }
 
             //read configuration
             try {
                 final ConfigReader configReader = new ConfigReader();
                 configReader.setLogger(logger);
-                final AutoverConfigDecorator config = configReader.readConfig(systemProperties, multiModuleProjectDirectory);
+                final AutoverConfigDecorator config = configReader.readConfig(systemProperties, autoverSession.getMavenMultiModuleProjectDir());
                 autoverSession.setConfig(config);
             } catch (final IOException | JAXBException | SAXException e) {
                 throw new MavenExecutionException(e.getMessage(), e);

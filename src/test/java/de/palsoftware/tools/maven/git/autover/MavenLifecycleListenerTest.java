@@ -37,7 +37,7 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
     }
 
     @Test
-    public void afterSessionStart() throws MavenExecutionException {
+    public void afterSessionStart() throws MavenExecutionException, IOException {
 
         //disabled = false
         //disabled pom change = false
@@ -45,7 +45,7 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
         autoverSession.setConfig(null);
 
         mavenLifecycleListener.afterSessionStart(mavenSession);
-        Assert.assertTrue("MavenLifecycleListener -> afterSessionStart problem!", multiModuleProjectDirectory.equals(autoverSession.getMavenMultiModuleProjectDir()));
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionStart problem!", multiModuleProjectDirectory.getCanonicalFile().equals(autoverSession.getMavenMultiModuleProjectDir()));
         Assert.assertTrue("MavenLifecycleListener -> afterSessionStart problem!", autoverConfigDecorator.equals(autoverSession.getConfig()));
         Assert.assertFalse("MavenLifecycleListener -> afterSessionStart problem!", autoverSession.isDisable());
         Assert.assertFalse("MavenLifecycleListener -> afterSessionStart problem!", autoverSession.isDisablePomChange());
@@ -70,7 +70,7 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
         systemProperties.setProperty(MavenLifecycleListener.DISABLE_PROPERTY_KEY, Boolean.FALSE.toString());
         systemProperties.setProperty(MavenLifecycleListener.DISABLE_POM_CHANGE_PROPERTY_KEY, Boolean.TRUE.toString());
         mavenLifecycleListener.afterSessionStart(mavenSession);
-        Assert.assertTrue("MavenLifecycleListener -> afterSessionStart problem!", multiModuleProjectDirectory.equals(autoverSession.getMavenMultiModuleProjectDir()));
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionStart problem!", multiModuleProjectDirectory.getCanonicalFile().equals(autoverSession.getMavenMultiModuleProjectDir()));
         Assert.assertTrue("MavenLifecycleListener -> afterSessionStart problem!", autoverConfigDecorator.equals(autoverSession.getConfig()));
         Assert.assertFalse("MavenLifecycleListener -> afterSessionStart problem!", autoverSession.isDisable());
         Assert.assertTrue("MavenLifecycleListener -> afterSessionStart problem!", autoverSession.isDisablePomChange());

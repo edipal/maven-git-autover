@@ -58,6 +58,15 @@ public class LocalizationHelper {
      */
     public static final String MSG_CONF_FILE_USER = "msg.conf.file.user";
     /**
+     * Resource bundle key for the message that the default configuration will be used.
+     */
+    public static final String MSG_CONF_DEFAULT = "msg.conf.default";
+    /**
+     * Resource bundle key for the message that displays the settings of the configuration that will be used.
+     * 1 parameter: the configuration
+     */
+    public static final String MSG_CONF_SETTINGS = "msg.conf.settings";
+    /**
      * Resource bundle key for the message that the proj will be processed.
      * 1 parameter: the project/model id
      */
