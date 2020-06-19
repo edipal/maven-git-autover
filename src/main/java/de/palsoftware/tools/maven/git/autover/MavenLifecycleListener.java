@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -123,6 +124,23 @@ public class MavenLifecycleListener extends AbstractMavenLifecycleParticipant {
                 final String id = projectModel.getId();
                 if (newPomFiles.containsKey(id)) {
                     mavenHelper.replacePomFile(project, newPomFiles.get(id));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void afterSessionEnd(final MavenSession session) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_AFTER_SESSION_END));
+        }
+        if (!autoverSession.isDisable() && !autoverSession.isDisablePomChange()) {
+            //delete generated poms
+            final Collection<File> newPomFiles = autoverSession.getNewPomFiles().values();
+            for (final File newPomFile : newPomFiles) {
+                final boolean deleteOk = newPomFile.delete();
+                if (!deleteOk) {
+                    logger.warn(new LocalizationHelper().getMessage(LocalizationHelper.ERR_CAN_NOT_DELETE_POM_FILE, newPomFile.getAbsolutePath()));
                 }
             }
         }

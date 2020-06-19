@@ -36,7 +36,7 @@ public class MavenEventSpy extends AbstractEventSpy {
     @Override
     public void onEvent(final Object event) throws Exception {
         if (logger.isDebugEnabled()) {
-            logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_ON_EVENT_CALLED));
+            logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_ON_EVENT_CALLED, event));
         }
         super.onEvent(event);
     }

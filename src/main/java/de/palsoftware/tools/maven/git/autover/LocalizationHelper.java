@@ -44,10 +44,10 @@ public class LocalizationHelper {
      */
     public static final String ERR_CONF_FILE_INVALID = "err.conf.file.invalid";
     /**
-     * Resource bundle key for problems reading the configuration file.
-     * 1 parameter: the error message
+     * Resource bundle key for reporting problem with deleting the generated poms at the end of the build..
+     * 1 parameter: the path to the pom file that couldn't be deleted
      */
-    public static final String ERR_CONF_FILE_CANT_READ = "err.conf.file.cant.read";
+    public static final String ERR_CAN_NOT_DELETE_POM_FILE = "err.can.not.delete.pom.file";
     /**
      * Resource bundle key for err message in case not tag is found.
      */
@@ -80,6 +80,10 @@ public class LocalizationHelper {
      * Resource bundle key for the message that the after session start was called.
      */
     public static final String MSG_AFTER_SESSION_START = "msg.after.session.start";
+    /**
+     * Resource bundle key for the message that the after session end was called.
+     */
+    public static final String MSG_AFTER_SESSION_END = "msg.after.session.end";
     /**
      * Resource bundle key for the message that the after projects read was called.
      */

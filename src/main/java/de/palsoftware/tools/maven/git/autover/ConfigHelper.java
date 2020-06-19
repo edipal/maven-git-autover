@@ -37,7 +37,7 @@ public class ConfigHelper {
      */
     public static final AutoverBranchConfig DEFAULT_BUGFIX_CONFIG;
     /**
-     * Default configuration for the bugfix branch.
+     * Default configuration for the PR branch.
      */
     public static final AutoverBranchConfig DEFAULT_PR_CONFIG;
     /**
@@ -67,8 +67,8 @@ public class ConfigHelper {
         DEFAULT_BUGFIX_CONFIG.setNameRegex("bugfix/([A-Z0-9]+-[0-9]+)-.*");
         DEFAULT_BUGFIX_CONFIG.setStopOn(StopOnEnum.ON_FIRST_ANN);
         DEFAULT_PR_CONFIG = new AutoverBranchConfig();
-        DEFAULT_PR_CONFIG.setNameRegex("PR-\\d+");
-        DEFAULT_PR_CONFIG.setStopOn(StopOnEnum.ON_FIRST_ANN);
+        DEFAULT_PR_CONFIG.setNameRegex("(PR-\\d+)");
+        DEFAULT_PR_CONFIG.setStopOn(StopOnEnum.ON_FIRST);
         DEFAULT_OTHER_CONFIG = new AutoverBranchConfig();
         DEFAULT_OTHER_CONFIG.setNameRegex(".*");
         DEFAULT_OTHER_CONFIG.setStopOn(StopOnEnum.ON_FIRST);
@@ -183,7 +183,7 @@ public class ConfigHelper {
                 //increase patch number
                 patchVersion++;
                 //replace the patch number
-                calculatedVersion = tagName.substring(0, versionTagRegexMatcher.start(1)) + String.valueOf(patchVersion)
+                calculatedVersion = tagName.substring(0, versionTagRegexMatcher.start(1)) + patchVersion
                         + tagName.substring(versionTagRegexMatcher.end(1));
             } else {
                 calculatedVersion = tagName;

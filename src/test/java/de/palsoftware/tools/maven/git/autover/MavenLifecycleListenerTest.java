@@ -7,9 +7,11 @@ import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import sun.security.action.GetPropertyAction;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.AccessController;
 import java.util.Map;
 import java.util.Properties;
 
@@ -66,7 +68,6 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
 
         //disabled = false
         //disabled pom change = true
-
         systemProperties.setProperty(MavenLifecycleListener.DISABLE_PROPERTY_KEY, Boolean.FALSE.toString());
         systemProperties.setProperty(MavenLifecycleListener.DISABLE_POM_CHANGE_PROPERTY_KEY, Boolean.TRUE.toString());
         mavenLifecycleListener.afterSessionStart(mavenSession);
@@ -148,6 +149,65 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
         Assert.assertTrue("MavenLifecycleListener -> afterProjectsRead problem!", file12.equals(project1.getFile()));
         Assert.assertTrue("MavenLifecycleListener -> afterProjectsRead problem!", file22.equals(project2.getFile()));
         Assert.assertTrue("MavenLifecycleListener -> afterProjectsRead problem!", file32.equals(project3.getFile()));
+    }
 
+    @Test
+    public void afterSessionEnd() throws IOException {
+        final Map<String, File> newPomFiles = autoverSession.getNewPomFiles();
+
+        newPomFiles.clear();
+        final File file11 = createTmpFile();
+        newPomFiles.put(model1.getId(), file11);
+        final File file21 = createTmpFile();
+        newPomFiles.put(model2.getId(), file21);
+        final File file31 = createTmpFile();
+        newPomFiles.put(model3.getId(), file31);
+        final File file42 = new File(AccessController.doPrivileged(new GetPropertyAction("java.io.tmpdir")), System.currentTimeMillis() + "_"
+                + System.nanoTime() + ".dummy");
+        newPomFiles.put("DUMMY", file42);
+
+        //disabled = true
+        //disabled pom change = true
+        autoverSession.setDisable(true);
+        autoverSession.setDisablePomChange(true);
+
+        mavenLifecycleListener.afterSessionEnd(mavenSession);
+
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file11.exists());
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file21.exists());
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file31.exists());
+
+        //disabled = true
+        //disabled pom change = false
+        autoverSession.setDisable(true);
+        autoverSession.setDisablePomChange(false);
+
+        mavenLifecycleListener.afterSessionEnd(mavenSession);
+
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file11.exists());
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file21.exists());
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file31.exists());
+
+        //disabled = false
+        //disabled pom change = true
+        autoverSession.setDisable(false);
+        autoverSession.setDisablePomChange(true);
+
+        mavenLifecycleListener.afterSessionEnd(mavenSession);
+
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file11.exists());
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file21.exists());
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionEnd problem!", file31.exists());
+
+        //disabled = false
+        //disabled pom change = false
+        autoverSession.setDisable(false);
+        autoverSession.setDisablePomChange(false);
+
+        mavenLifecycleListener.afterSessionEnd(mavenSession);
+
+        Assert.assertFalse("MavenLifecycleListener -> afterSessionEnd problem!", file11.exists());
+        Assert.assertFalse("MavenLifecycleListener -> afterSessionEnd problem!", file21.exists());
+        Assert.assertFalse("MavenLifecycleListener -> afterSessionEnd problem!", file31.exists());
     }
 }
