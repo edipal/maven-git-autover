@@ -36,7 +36,7 @@ The plugin has the following default configuration.
   - *release/.**                    - ON_FIRST_ANN
   - *feature/([A-Z0-9]+-[0-9]+)-.** - ON_FIRST_LIGHT
   - *bugfix/([A-Z0-9]+-[0-9]+)-.**  - ON_FIRST_ANN
-  - *PR-\\d+*                       - ON_FIRST_ANN (for jenkins)
+  - *(PR-\\d+*)                     - ON_FIRST (for jenkins)
   - *.**                            - ON_FIRST
     
 # Use non default configuration
