@@ -16,7 +16,7 @@ A configuration has the following parameters:
 - *autoverBranchConfigs*: The branch configurations
    - *nameRegex*: This is used to determine the branches that should use this configuration
    - *stopOn*: the stop on setting to be used by branches that match the above pattern possible values
-      - *ON_FIRST*: It will use the first annotation that it will find (regardles of the type)
+      - *ON_FIRST*: It will use the first annotation that it will find (regardless of the type)
       - *ON_FIRST_ANN*: It will use the first annotated branch that it will find
       - *ON_FIRST_LIGHT*: It will use the first light branch that it will find
 The branch name is checked against the configured branches in the order from the configuration file and it stops on the first that matches.
@@ -29,7 +29,7 @@ The plugin will look to the git history and "walk back" from current commit unti
 
 # Default configuration
 The plugin has the following default configuration.
-- *versionTagRegex* - [0-9]+\\.[0-9]+\\.([0-9]+)(-SNAPSHOT)?
+- *versionTagRegex* - ([0-9]+\\.[0-9]+\\.([0-9]+)(-SNAPSHOT)?)
 - *includeGroupIds* - empty (all groups will be considered)
 - *autoverBranchConfigs*
   - *master*                        - ON_FIRST_LIGHT
@@ -45,4 +45,4 @@ This custom configuration file should have the name *git.autover.conf.xml* and b
 
 # How to disable it
 The plugin execution can be disabled using *-Dautover.disable=true*. This way the version specified in the pom file will be used.
-Also one could disable only the pom changes using *-Dautover.disable.pom.change=true*.
+Also, one could disable only the pom changes using *-Dautover.disable.pom.change=true*.

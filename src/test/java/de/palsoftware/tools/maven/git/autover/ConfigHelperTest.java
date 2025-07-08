@@ -95,8 +95,8 @@ public class ConfigHelperTest {
     }
 
     private void assertSameBranchConfig(final AutoverBranchConfig branchConfig, final AutoverBranchConfigDecorator foundBranchConfig) {
-        Assert.assertTrue("ConfigHelper -> getBranchConfig problem!", branchConfig.getNameRegex().equals(foundBranchConfig.getNameRegex()));
-        Assert.assertTrue("ConfigHelper -> getBranchConfig problem!", branchConfig.getStopOn().equals(foundBranchConfig.getStopOn()));
+		Assert.assertEquals("ConfigHelper -> getBranchConfig problem!", branchConfig.getNameRegex(), foundBranchConfig.getNameRegex());
+		Assert.assertEquals("ConfigHelper -> getBranchConfig problem!", branchConfig.getStopOn(), foundBranchConfig.getStopOn());
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(false);
         gitAnalysisResult.setBranchName("release/1.1.x");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //T        F              F         T
         gitAnalysisResult.setOnTag(true);
@@ -121,7 +121,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(false);
         gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //T        F              T         F
         gitAnalysisResult.setOnTag(true);
@@ -130,7 +130,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(true);
         gitAnalysisResult.setBranchName("release/1.1.x");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //T        F              T         T
         gitAnalysisResult.setOnTag(true);
@@ -139,7 +139,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(true);
         gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //T        T              F         F
         gitAnalysisResult.setOnTag(true);
@@ -148,7 +148,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(false);
         gitAnalysisResult.setBranchName("release/1.1.x");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //T        T              F         T
         gitAnalysisResult.setOnTag(true);
@@ -157,7 +157,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(false);
         gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //T        T              T         F
         gitAnalysisResult.setOnTag(true);
@@ -166,7 +166,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(true);
         gitAnalysisResult.setBranchName("release/1.1.x");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //T        T              T         T
         gitAnalysisResult.setOnTag(true);
@@ -175,7 +175,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(true);
         gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //F        F              F         F
         gitAnalysisResult.setOnTag(false);
@@ -184,7 +184,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(false);
         gitAnalysisResult.setBranchName("release/1.1.x");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //F        F              F         T
         gitAnalysisResult.setOnTag(false);
@@ -193,7 +193,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(false);
         gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0-LIB_111".equals(configHelper.calculateVer(gitAnalysisResult)));
+        Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0-LIB_111", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //F        F              T         F
         gitAnalysisResult.setOnTag(false);
@@ -202,7 +202,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(true);
         gitAnalysisResult.setBranchName("release/1.1.x");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.1-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+        Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.1-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //F        F              T         T
         gitAnalysisResult.setOnTag(false);
@@ -211,7 +211,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(true);
         gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.1-LIB_111-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.1-LIB_111-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //F        T              F         F
         gitAnalysisResult.setOnTag(false);
@@ -220,7 +220,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(false);
         gitAnalysisResult.setBranchName("release/1.1.x");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //F        T              F         T
         gitAnalysisResult.setOnTag(false);
@@ -229,7 +229,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(false);
         gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.0-LIB_111-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0-LIB_111-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //F        T              T         F
         gitAnalysisResult.setOnTag(false);
@@ -238,7 +238,7 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(true);
         gitAnalysisResult.setBranchName("release/1.1.x");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.1-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.1-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
         //on tag | tag snapshot | ann tag | bq
         //F        T              T         T
         gitAnalysisResult.setOnTag(false);
@@ -247,7 +247,30 @@ public class ConfigHelperTest {
         gitAnalysisResult.setAnnotatedTag(true);
         gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
         gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
-        Assert.assertTrue("ConfigHelper -> calculateVer problem!", "1.0.1-LIB_111-SNAPSHOT".equals(configHelper.calculateVer(gitAnalysisResult)));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.1-LIB_111-SNAPSHOT", configHelper.calculateVer(gitAnalysisResult));
+
+        //on tag | tag snapshot | ann tag | bq
+        //T        F              T         T
+        autoverConfig.setVersionTagRegex("(?:release[\\/])?([0-9]+\\.[0-9]+\\.([0-9]+)(-SNAPSHOT)?)");
+        ConfigHelper newConfigHelper = new ConfigHelper(new AutoverConfigDecorator(autoverConfig));
+        gitAnalysisResult.setOnTag(true);
+        tagName = "release/1.0.0";
+        gitAnalysisResult.setTagName(tagName);
+        gitAnalysisResult.setAnnotatedTag(true);
+        gitAnalysisResult.setBranchName("feature/LIB-111-test-junit");
+        gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_FEATURE_CONFIG));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.0", newConfigHelper.calculateVer(gitAnalysisResult));
+        //on tag | tag snapshot | ann tag | bq
+        //T        F              T         T
+        autoverConfig.setVersionTagRegex("(?:release[\\/])?([0-9]+\\.[0-9]+\\.([0-9]+)(-SNAPSHOT)?)");
+        newConfigHelper = new ConfigHelper(new AutoverConfigDecorator(autoverConfig));
+        gitAnalysisResult.setOnTag(false);
+        tagName = "release/1.0.0";
+        gitAnalysisResult.setTagName(tagName);
+        gitAnalysisResult.setAnnotatedTag(true);
+        gitAnalysisResult.setBranchName("release/1.1.x");
+        gitAnalysisResult.setBranchConfig(new AutoverBranchConfigDecorator(ConfigHelper.DEFAULT_RELEASE_CONFIG));
+		Assert.assertEquals("ConfigHelper -> calculateVer problem!", "1.0.1-SNAPSHOT", newConfigHelper.calculateVer(gitAnalysisResult));
     }
 
     @Test
