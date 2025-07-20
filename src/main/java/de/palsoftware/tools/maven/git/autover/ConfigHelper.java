@@ -19,7 +19,7 @@ public class ConfigHelper {
     /**
      * The default version tag regular expression.
      */
-    public static final String DEFAULT_VERSION_TAG_REGEX = "[0-9]+\\.[0-9]+\\.([0-9]+)(-SNAPSHOT)?";
+    public static final String DEFAULT_VERSION_TAG_REGEX = "([0-9]+\\.[0-9]+\\.([0-9]+)(-SNAPSHOT)?)";
     /**
      * Default configuration for the master branch.
      */
@@ -151,22 +151,27 @@ public class ConfigHelper {
      */
     public String calculateVer(final GitAnalysisResult gitAnalysisResult) {
         final String tagName = gitAnalysisResult.getTagName();
+        final Pattern versionTagRegexPattern = config.getVersionTagPattern();
+        final Matcher versionTagRegexMatcher = versionTagRegexPattern.matcher(tagName);
+        versionTagRegexMatcher.matches(); //we are sure it matches because it would otherwise not have been selected as a possible tag
+        final int groupCount = versionTagRegexMatcher.groupCount();
+        final LocalizationHelper localizationHelper = new LocalizationHelper();
+        if (groupCount == 0) {
+            throw new RuntimeException(localizationHelper.getMessage(LocalizationHelper.ERR_NO_GROUP_DEFINED_FOR_VERSION_PATCH,
+                    config.getVersionTagRegex()));
+        }
+
         String calculatedVersion;
         if (gitAnalysisResult.isOnTag()) {
-            calculatedVersion = tagName;
+            calculatedVersion = versionTagRegexMatcher.group(1);
         } else {
             if (gitAnalysisResult.isAnnotatedTag()) {
-                final LocalizationHelper localizationHelper = new LocalizationHelper();
-                final Pattern versionTagRegexPattern = config.getVersionTagPattern();
-                final Matcher versionTagRegexMatcher = versionTagRegexPattern.matcher(tagName);
-                versionTagRegexMatcher.matches(); //we are sure it matches because it would otherwise not have been selected as a possible tag
-                final int groupCount = versionTagRegexMatcher.groupCount();
                 String patchVersionStr = null;
-                if (groupCount == 0) {
+                if (groupCount <= 1) {
                     throw new RuntimeException(localizationHelper.getMessage(LocalizationHelper.ERR_NO_GROUP_DEFINED_FOR_VERSION_PATCH,
                             config.getVersionTagRegex()));
                 } else {
-                    patchVersionStr = versionTagRegexMatcher.group(1);
+                    patchVersionStr = versionTagRegexMatcher.group(2);
                 }
                 int patchVersion = -1;
                 if ((patchVersionStr == null) || (patchVersionStr.length() == 0)) {
@@ -183,8 +188,8 @@ public class ConfigHelper {
                 //increase patch number
                 patchVersion++;
                 //replace the patch number
-                calculatedVersion = tagName.substring(0, versionTagRegexMatcher.start(1)) + patchVersion
-                        + tagName.substring(versionTagRegexMatcher.end(1));
+                calculatedVersion = tagName.substring(versionTagRegexMatcher.start(1), versionTagRegexMatcher.start(2)) + patchVersion
+                        + tagName.substring(versionTagRegexMatcher.end(2));
             } else {
                 calculatedVersion = tagName;
             }
