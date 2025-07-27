@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Test class for {@link MavenLifecycleListener}
