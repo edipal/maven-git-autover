@@ -32,6 +32,12 @@ import java.util.Properties;
  * @since 2018-06-15
  */
 public class ConfigReader {
+    /**
+     * Default constructor for ConfigReader.
+     */
+    public ConfigReader() {
+        // Default constructor
+    }
 
     /**
      * the default configuration file name.

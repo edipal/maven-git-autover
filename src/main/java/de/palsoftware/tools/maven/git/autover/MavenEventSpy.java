@@ -14,6 +14,12 @@ import org.codehaus.plexus.logging.Logger;
  */
 @Component(role = EventSpy.class)
 public class MavenEventSpy extends AbstractEventSpy {
+    /**
+     * Default constructor for MavenEventSpy.
+     */
+    public MavenEventSpy() {
+        // ...existing code...
+    }
 
     /**
      * The holder of various information needed at different points in the maven execution..

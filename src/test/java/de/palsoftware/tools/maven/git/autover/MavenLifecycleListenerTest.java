@@ -7,13 +7,13 @@ import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import sun.security.action.GetPropertyAction;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.AccessController;
 import java.util.Map;
 import java.util.Properties;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Test class for {@link MavenLifecycleListener}
@@ -162,8 +162,8 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
         newPomFiles.put(model2.getId(), file21);
         final File file31 = createTmpFile();
         newPomFiles.put(model3.getId(), file31);
-        final File file42 = new File(AccessController.doPrivileged(new GetPropertyAction("java.io.tmpdir")), System.currentTimeMillis() + "_"
-                + System.nanoTime() + ".dummy");
+        final String tmpDir = System.getProperty("java.io.tmpdir"); // non null
+        final File file42 = new File(tmpDir, System.currentTimeMillis() + "_" + System.nanoTime() + ".dummy");
         newPomFiles.put("DUMMY", file42);
 
         //disabled = true
