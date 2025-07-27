@@ -30,6 +30,13 @@ public class GitAnalysisResult {
     private AutoverBranchConfigDecorator branchConfig;
 
     /**
+     * Default constructor for GitAnalysisResult.
+     */
+    public GitAnalysisResult() {
+        // ...existing code...
+    }
+
+    /**
      * Getter.
      *
      * @return the tag name that was chosen

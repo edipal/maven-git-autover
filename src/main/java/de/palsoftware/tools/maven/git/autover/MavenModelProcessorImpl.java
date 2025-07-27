@@ -22,6 +22,12 @@ import java.util.Map;
  */
 @Component(role = ModelProcessor.class)
 public class MavenModelProcessorImpl extends DefaultModelProcessor {
+    /**
+     * Default constructor for MavenModelProcessorImpl.
+     */
+    public MavenModelProcessorImpl() {
+        // ...existing code...
+    }
 
     /**
      * The logger.

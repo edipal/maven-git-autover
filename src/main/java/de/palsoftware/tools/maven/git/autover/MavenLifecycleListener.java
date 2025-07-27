@@ -26,6 +26,12 @@ import java.util.Properties;
  */
 @Component(role = AbstractMavenLifecycleParticipant.class)
 public class MavenLifecycleListener extends AbstractMavenLifecycleParticipant {
+    /**
+     * Default constructor for MavenLifecycleListener.
+     */
+    public MavenLifecycleListener() {
+        // ...existing code...
+    }
 
     /**
      * Property key for disabling the extension.
