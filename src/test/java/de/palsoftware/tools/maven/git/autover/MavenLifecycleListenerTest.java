@@ -7,11 +7,9 @@ import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import sun.security.action.GetPropertyAction;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.AccessController;
 import java.util.Map;
 import java.util.Properties;
 
@@ -162,7 +160,7 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
         newPomFiles.put(model2.getId(), file21);
         final File file31 = createTmpFile();
         newPomFiles.put(model3.getId(), file31);
-        final File file42 = new File(AccessController.doPrivileged(new GetPropertyAction("java.io.tmpdir")), System.currentTimeMillis() + "_"
+        final File file42 = new File(System.getProperty("java.io.tmpdir"), System.currentTimeMillis() + "_"
                 + System.nanoTime() + ".dummy");
         newPomFiles.put("DUMMY", file42);
 
