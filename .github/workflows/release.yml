@@ -32,6 +32,8 @@ jobs:
       - name: Configure GPG key
         run: |
           echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+          KEYID=$(gpg --list-secret-keys --with-colons | awk -F: '/^sec/ {print $5; exit}')
+          echo "default-key $KEYID" >> ~/.gnupg/gpg.conf
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
 
@@ -42,12 +44,14 @@ jobs:
 
 
       - name: Prepare and perform Maven release
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
             DRYRUN="-DdryRun=true"
           else
             DRYRUN=""
           fi
-          mvn --batch-mode -Psign release:prepare release:perform -DtagNameFormat=@{project.version} $DRYRUN -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -Darguments="-Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}"
+          mvn --batch-mode -Psign release:prepare release:perform -DtagNameFormat=@{project.version} $DRYRUN
 
       # The Maven Release Plugin will handle deployment, versioning, and tagging automatically.
