@@ -160,8 +160,10 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
         newPomFiles.put(model2.getId(), file21);
         final File file31 = createTmpFile();
         newPomFiles.put(model3.getId(), file31);
-        final File file42 = new File(System.getProperty("java.io.tmpdir"), System.currentTimeMillis() + "_"
-                + System.nanoTime() + ".dummy");
+        final String tmpDir = System.getProperty("java.io.tmpdir") != null 
+                ? System.getProperty("java.io.tmpdir") 
+                : System.getProperty("user.home") + "/tmp";
+        final File file42 = new File(tmpDir, System.currentTimeMillis() + "_" + System.nanoTime() + ".dummy");
         newPomFiles.put("DUMMY", file42);
 
         //disabled = true
