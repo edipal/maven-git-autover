@@ -14,11 +14,21 @@ import java.util.Objects;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "autoverConfig", namespace = "http://de.palsoftware/tools/maven/git/autover/conf", propOrder = {
+        "disable",
         "versionTagRegex",
         "includeGroupIds",
         "autoverBranchConfigs"
 })
 public class AutoverConfig {
+
+    /**
+     * Whether the extension is disabled by default.
+     * When set to true in git.autover.conf.xml, the extension is disabled (e.g. for local IDE use).
+     * Can be overridden from the CLI via -Dautover.disable=false (e.g. in a CI pipeline).
+     * Default is false.
+     */
+    @XmlElement(namespace = "http://de.palsoftware/tools/maven/git/autover/conf", required = false)
+    private boolean disable;
 
     /**
      * The pattern for the version tag.
@@ -43,6 +53,24 @@ public class AutoverConfig {
      */
     public AutoverConfig() {
         super();
+    }
+
+    /**
+     * Getter.
+     *
+     * @return whether the extension is disabled by default (from config)
+     */
+    public boolean isDisable() {
+        return disable;
+    }
+
+    /**
+     * Setter.
+     *
+     * @param value whether the extension should be disabled by default (from config)
+     */
+    public void setDisable(final boolean value) {
+        this.disable = value;
     }
 
     /**
@@ -96,20 +124,22 @@ public class AutoverConfig {
             return false;
         }
         AutoverConfig that = (AutoverConfig) o;
-        return Objects.equals(versionTagRegex, that.versionTagRegex)
+        return disable == that.disable
+                && Objects.equals(versionTagRegex, that.versionTagRegex)
                 && Objects.equals(includeGroupIds, that.includeGroupIds)
                 && Objects.equals(autoverBranchConfigs, that.autoverBranchConfigs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(versionTagRegex, includeGroupIds, autoverBranchConfigs);
+        return Objects.hash(disable, versionTagRegex, includeGroupIds, autoverBranchConfigs);
     }
 
     @Override
     public String toString() {
         return "AutoverConfig{"
-                + "versionTagRegex='" + versionTagRegex + '\''
+                + "disable=" + disable
+                + ", versionTagRegex='" + versionTagRegex + '\''
                 + ", includeGroupIds=" + includeGroupIds
                 + ", autoverBranchConfigs=" + autoverBranchConfigs
                 + '}';

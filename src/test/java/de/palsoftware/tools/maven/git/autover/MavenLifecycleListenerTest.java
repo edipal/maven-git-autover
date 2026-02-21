@@ -210,4 +210,177 @@ public class MavenLifecycleListenerTest extends MavenBaseTest {
         Assert.assertFalse("MavenLifecycleListener -> afterSessionEnd problem!", file21.exists());
         Assert.assertFalse("MavenLifecycleListener -> afterSessionEnd problem!", file31.exists());
     }
+
+    @Test
+    public void afterSessionStart_configDisable() throws Exception {
+        final Properties systemProperties = mavenSession.getSystemProperties();
+
+        // Point to a config file that has disable=true
+        final java.net.URL configFileUrl = this.getClass().getClassLoader().getResource("test_config_disabled.xml");
+        final File configFile = new File(configFileUrl.toURI());
+        systemProperties.setProperty(ConfigReader.GIT_AUTOVER_CONF_PROPERTY, configFile.getAbsolutePath());
+
+        // Case 1: no CLI autover.disable flag -> config's disable=true should be respected
+        systemProperties.remove(MavenLifecycleListener.DISABLE_PROPERTY_KEY);
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionStart config disable=true, no CLI override: should be disabled!",
+                autoverSession.isDisable());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart config disable=true: multiModuleProjectDir should be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart config disable=true: config should be set!",
+                autoverSession.getConfig());
+
+        // Case 2: CLI -Dautover.disable=false overrides config's disable=true -> extension should be enabled
+        systemProperties.setProperty(MavenLifecycleListener.DISABLE_PROPERTY_KEY, Boolean.FALSE.toString());
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+        autoverSession.setDisable(false);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertFalse("MavenLifecycleListener -> afterSessionStart CLI disable=false overrides config disable=true: should be enabled!",
+                autoverSession.isDisable());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart: multiModuleProjectDir should be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart: config should be set!",
+                autoverSession.getConfig());
+
+        // Case 3: CLI -Dautover.disable=true -> extension should be disabled, config not read
+        systemProperties.setProperty(MavenLifecycleListener.DISABLE_PROPERTY_KEY, Boolean.TRUE.toString());
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+        autoverSession.setDisable(false);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionStart CLI disable=true: should be disabled!",
+                autoverSession.isDisable());
+        Assert.assertNull("MavenLifecycleListener -> afterSessionStart CLI disable=true: multiModuleProjectDir should not be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNull("MavenLifecycleListener -> afterSessionStart CLI disable=true: config should not be set!",
+                autoverSession.getConfig());
+
+        // Cleanup
+        systemProperties.remove(MavenLifecycleListener.DISABLE_PROPERTY_KEY);
+        systemProperties.remove(ConfigReader.GIT_AUTOVER_CONF_PROPERTY);
+    }
+
+    @Test
+    public void afterSessionStart_configEnabled() throws Exception {
+        final Properties systemProperties = mavenSession.getSystemProperties();
+
+        // Point to a config file that has disable=false
+        final java.net.URL configFileUrl = this.getClass().getClassLoader().getResource("test_config_enabled.xml");
+        final File configFile = new File(configFileUrl.toURI());
+        systemProperties.setProperty(ConfigReader.GIT_AUTOVER_CONF_PROPERTY, configFile.getAbsolutePath());
+
+        // Case 1: no CLI autover.disable flag -> config's disable=false -> extension should be enabled
+        systemProperties.remove(MavenLifecycleListener.DISABLE_PROPERTY_KEY);
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertFalse("MavenLifecycleListener -> afterSessionStart config disable=false, no CLI override: should be enabled!",
+                autoverSession.isDisable());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart config disable=false: multiModuleProjectDir should be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart config disable=false: config should be set!",
+                autoverSession.getConfig());
+
+        // Case 2: CLI -Dautover.disable=false -> extension should be enabled
+        systemProperties.setProperty(MavenLifecycleListener.DISABLE_PROPERTY_KEY, Boolean.FALSE.toString());
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertFalse("MavenLifecycleListener -> afterSessionStart CLI disable=false, config disable=false: should be enabled!",
+                autoverSession.isDisable());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart: multiModuleProjectDir should be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart: config should be set!",
+                autoverSession.getConfig());
+
+        // Case 3: CLI -Dautover.disable=true -> extension should be disabled, config not read
+        systemProperties.setProperty(MavenLifecycleListener.DISABLE_PROPERTY_KEY, Boolean.TRUE.toString());
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+        autoverSession.setDisable(false);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionStart CLI disable=true: should be disabled!",
+                autoverSession.isDisable());
+        Assert.assertNull("MavenLifecycleListener -> afterSessionStart CLI disable=true: multiModuleProjectDir should not be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNull("MavenLifecycleListener -> afterSessionStart CLI disable=true: config should not be set!",
+                autoverSession.getConfig());
+
+        // Cleanup
+        systemProperties.remove(MavenLifecycleListener.DISABLE_PROPERTY_KEY);
+        systemProperties.remove(ConfigReader.GIT_AUTOVER_CONF_PROPERTY);
+    }
+
+    @Test
+    public void afterSessionStart_configDefault() throws Exception {
+        final Properties systemProperties = mavenSession.getSystemProperties();
+
+        // Point to a config file that has no disable element (should default to false)
+        final java.net.URL configFileUrl = this.getClass().getClassLoader().getResource("test_config.xml");
+        final File configFile = new File(configFileUrl.toURI());
+        systemProperties.setProperty(ConfigReader.GIT_AUTOVER_CONF_PROPERTY, configFile.getAbsolutePath());
+
+        // Case 1: no CLI autover.disable flag -> config has no disable (defaults to false) -> extension should be enabled
+        systemProperties.remove(MavenLifecycleListener.DISABLE_PROPERTY_KEY);
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertFalse("MavenLifecycleListener -> afterSessionStart config default disable, no CLI override: should be enabled!",
+                autoverSession.isDisable());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart config default disable: multiModuleProjectDir should be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart config default disable: config should be set!",
+                autoverSession.getConfig());
+
+        // Case 2: CLI -Dautover.disable=false -> extension should be enabled
+        systemProperties.setProperty(MavenLifecycleListener.DISABLE_PROPERTY_KEY, Boolean.FALSE.toString());
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertFalse("MavenLifecycleListener -> afterSessionStart CLI disable=false, config default disable: should be enabled!",
+                autoverSession.isDisable());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart: multiModuleProjectDir should be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNotNull("MavenLifecycleListener -> afterSessionStart: config should be set!",
+                autoverSession.getConfig());
+
+        // Case 3: CLI -Dautover.disable=true -> extension should be disabled, config not read
+        systemProperties.setProperty(MavenLifecycleListener.DISABLE_PROPERTY_KEY, Boolean.TRUE.toString());
+        autoverSession.setMavenMultiModuleProjectDir(null);
+        autoverSession.setConfig(null);
+        autoverSession.setDisable(false);
+
+        mavenLifecycleListener.afterSessionStart(mavenSession);
+
+        Assert.assertTrue("MavenLifecycleListener -> afterSessionStart CLI disable=true: should be disabled!",
+                autoverSession.isDisable());
+        Assert.assertNull("MavenLifecycleListener -> afterSessionStart CLI disable=true: multiModuleProjectDir should not be set!",
+                autoverSession.getMavenMultiModuleProjectDir());
+        Assert.assertNull("MavenLifecycleListener -> afterSessionStart CLI disable=true: config should not be set!",
+                autoverSession.getConfig());
+
+        // Cleanup
+        systemProperties.remove(MavenLifecycleListener.DISABLE_PROPERTY_KEY);
+        systemProperties.remove(ConfigReader.GIT_AUTOVER_CONF_PROPERTY);
+    }
+
 }

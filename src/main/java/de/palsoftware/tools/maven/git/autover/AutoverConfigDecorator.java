@@ -54,6 +54,16 @@ public class AutoverConfigDecorator {
     /**
      * Getter.
      *
+     * @return whether the extension is disabled by default (from config).
+     *         Can be overridden by the CLI property -Dautover.disable.
+     */
+    public boolean isDisable() {
+        return autoverConfig.isDisable();
+    }
+
+    /**
+     * Getter.
+     *
      * @return the version tag regex
      */
     public String getVersionTagRegex() {

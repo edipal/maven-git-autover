@@ -67,43 +67,55 @@ public class MavenLifecycleListener extends AbstractMavenLifecycleParticipant {
         }
         final Properties systemProperties = session.getSystemProperties();
 
-        //check if extension is disabled
-        final String disableStr = systemProperties.getProperty(DISABLE_PROPERTY_KEY);
-        final boolean disable = Boolean.valueOf(disableStr);
-        autoverSession.setDisable(disable);
+        final String disableCliStr = systemProperties.getProperty(DISABLE_PROPERTY_KEY);
 
-        if (!disable) {
-            //check if the changing of the pom should be disabled
-            final String disablePomChangeStr = systemProperties.getProperty(DISABLE_POM_CHANGE_PROPERTY_KEY);
-            final boolean disablePomChange = Boolean.valueOf(disablePomChangeStr);
-            autoverSession.setDisablePomChange(disablePomChange);
-
-            if (disablePomChange) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_POM_CHANGE_DISABLED));
-                }
-            }
-            try {
-                //the first folder up the hierarchy where an .mvn folder is found
-                //if no .mvn folder is found it points to the folder where the pom file is
-                final File multiModuleProjectDirectory = session.getRequest().getMultiModuleProjectDirectory();
-                autoverSession.setMavenMultiModuleProjectDir(multiModuleProjectDirectory.getCanonicalFile());
-            } catch (final IOException e) {
-                throw new MavenExecutionException(e.getMessage(), e);
-            }
-
-            //read configuration
-            try {
-                final ConfigReader configReader = new ConfigReader();
-                configReader.setLogger(logger);
-                final AutoverConfigDecorator config = configReader.readConfig(systemProperties, autoverSession.getMavenMultiModuleProjectDir());
-                autoverSession.setConfig(config);
-            } catch (final IOException | JAXBException | SAXException e) {
-                throw new MavenExecutionException(e.getMessage(), e);
-            }
-        } else {
+        // If explicitly disabled via CLI, skip config reading entirely.
+        if (Boolean.parseBoolean(disableCliStr)) {
+            autoverSession.setDisable(true);
             if (logger.isDebugEnabled()) {
                 logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_DISABLED));
+            }
+            return;
+        }
+
+        // Read config once - needed whether CLI was not specified or CLI said false.
+        try {
+            final File multiModuleProjectDirectory = session.getRequest().getMultiModuleProjectDirectory();
+            autoverSession.setMavenMultiModuleProjectDir(multiModuleProjectDirectory.getCanonicalFile());
+        } catch (final IOException e) {
+            throw new MavenExecutionException(e.getMessage(), e);
+        }
+        try {
+            final ConfigReader configReader = new ConfigReader();
+            configReader.setLogger(logger);
+            final AutoverConfigDecorator config = configReader.readConfig(systemProperties, autoverSession.getMavenMultiModuleProjectDir());
+            autoverSession.setConfig(config);
+        } catch (final IOException | JAXBException | SAXException e) {
+            throw new MavenExecutionException(e.getMessage(), e);
+        }
+
+        // If CLI didn't specify disable, use the config value; otherwise CLI already said false.
+        if (disableCliStr == null) {
+            autoverSession.setDisable(autoverSession.getConfig().isDisable());
+        } else {
+            autoverSession.setDisable(false); // true is handled above, so if CLI specified disable, it must be false here.
+        }
+
+        if (autoverSession.isDisable()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_DISABLED));
+            }
+            return;
+        }
+
+        //check if the changing of the pom should be disabled
+        final String disablePomChangeStr = systemProperties.getProperty(DISABLE_POM_CHANGE_PROPERTY_KEY);
+        final boolean disablePomChange = Boolean.parseBoolean(disablePomChangeStr);
+        autoverSession.setDisablePomChange(disablePomChange);
+
+        if (disablePomChange) {
+            if (logger.isDebugEnabled()) {
+                logger.debug(new LocalizationHelper().getMessage(LocalizationHelper.MSG_POM_CHANGE_DISABLED));
             }
         }
     }

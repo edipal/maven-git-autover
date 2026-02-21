@@ -47,6 +47,14 @@
 
     <xs:complexType name="autoverConfig">
         <xs:sequence>
+            <xs:element type="xs:boolean" name="disable" minOccurs="0" maxOccurs="1" default="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        When set to true, the extension is disabled by default (e.g. for local IDE use).
+                        Can be overridden at build time via the CLI property -Dautover.disable=false (e.g. in a CI pipeline).
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element type="xs:string" name="versionTagRegex">
                 <xs:annotation>
                     <xs:documentation>This is used to determine what tags should be considered version tags.</xs:documentation>
